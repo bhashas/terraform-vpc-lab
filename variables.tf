@@ -6,7 +6,7 @@
 variable "aws_region" {
   description = "La région AWS cible"
   type        = string
-  default     = "eu-west-3"         # Paris (symbolique, même si on ne déploie pas)
+  default     = "eu-west-3" # Paris (symbolique, même si on ne déploie pas)
 }
 
 # CIDR du VPC principal
