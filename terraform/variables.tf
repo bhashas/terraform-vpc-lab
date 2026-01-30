@@ -1,40 +1,45 @@
+#############################
+# VARIABLES GLOBALES       #
+#############################
+
+# Région AWS utilisée par le provider
 variable "aws_region" {
-  description = "AWS region"
+  description = "La région AWS cible"
   type        = string
-  default     = "eu-west-3"
+  default     = "eu-west-3" # Paris (symbolique, même si on ne déploie pas)
 }
 
+# CIDR du VPC principal
+variable "vpc_cidr" {
+  description = "CIDR du VPC principal"
+  type        = string
+  default     = "10.0.0.0/16"
+}
+
+# CIDR du subnet public
+variable "public_subnet_cidr" {
+  description = "CIDR du subnet public"
+  type        = string
+  default     = "10.0.1.0/24"
+}
+
+# CIDR du subnet privé
+variable "private_subnet_cidr" {
+  description = "CIDR du subnet privé"
+  type        = string
+  default     = "10.0.2.0/24"
+}
+
+# Nom du projet (pour les tags)
 variable "project_name" {
-  description = "Project name prefix"
+  description = "Nom du projet / application"
   type        = string
-  default     = "terraform-ansible-lab"
+  default     = "terraform-vpc-lab"
 }
 
+# Environnement (dev, staging, prod)
 variable "environment" {
-  description = "Environment name"
+  description = "Environnement de déploiement"
   type        = string
   default     = "dev"
-}
-
-variable "instance_type" {
-  description = "EC2 instance type"
-  type        = string
-  default     = "t3.micro"
-}
-
-variable "ssh_key_name" {
-  description = "Name of the SSH key pair in AWS"
-  type        = string
-  default     = "terraform-lab-key"
-}
-
-variable "ssh_public_key" {
-  description = "SSH public key content"
-  type        = string
-}
-
-variable "allowed_ssh_cidr" {
-  description = "CIDR allowed to SSH (22)"
-  type        = string
-  default     = "0.0.0.0/0"
 }

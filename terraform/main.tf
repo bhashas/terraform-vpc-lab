@@ -1,145 +1,64 @@
-#######################################
-# Provider AWS
-#######################################
+#############################
+# BLOC PRINCIPAL TERRAFORM  #
+#############################
+
+terraform {
+  required_version = ">= 1.4.6" # Version minimale de Terraform requise
+
+  required_providers {          # Liste des providers utilisés dans le projet
+    aws = {                     # Provider "aws" = on décrit de l'infra AWS
+      source  = "hashicorp/aws" # D’où télécharger le plugin provider
+      version = "~> 5.0"        # Version du provider AWS (5.x.x)
+    }
+  }
+}
+
+#############################
+# CONFIGURATION DU PROVIDER #
+#############################
 
 provider "aws" {
-  region  = var.aws_region
-  profile = "terraform" # profil que tu utilises déjà localement
+  region = var.aws_region # On utilise une variable "aws_region" définie dans variables.tf
+  # Comme tu n'as pas de compte AWS,
+  # on NE FOURNIT PAS d'identifiants ici.
+  # Le code est valide, mais on ne fera pas de "plan/apply".
 }
 
-#######################################
-# VPC + Réseau simple
-#######################################
+#############################
+# RESSOURCES VPC SIMPLIFIÉ  #
+#############################
 
+# 1) Création du VPC principal
 resource "aws_vpc" "main" {
-  cidr_block           = "10.0.0.0/16"
-  enable_dns_support   = true
-  enable_dns_hostnames = true
+  cidr_block           = var.vpc_cidr # Le CIDR du VPC (ex: 10.0.0.0/16)
+  enable_dns_support   = true         # Pour que la résolution DNS fonctionne
+  enable_dns_hostnames = true         # Pour pouvoir avoir des noms DNS sur les instances
 
   tags = {
-    Name        = "${var.project_name}-vpc"
-    Environment = var.environment
+    Name = "${var.project_name}-vpc" # Nom du VPC dans la console AWS
+    Env  = var.environment           # Environnement (dev, staging, prod)
   }
 }
 
-resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.main.id
-
-  tags = {
-    Name = "${var.project_name}-igw"
-  }
-}
-
+# 2) Subnet public
 resource "aws_subnet" "public" {
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = "10.0.1.0/24"
-  map_public_ip_on_launch = true
+  vpc_id                  = aws_vpc.main.id        # Associe le subnet au VPC créé juste au-dessus
+  cidr_block              = var.public_subnet_cidr # Ex: 10.0.1.0/24
+  map_public_ip_on_launch = true                   # Donne une IP publique aux instances au lancement
 
   tags = {
     Name = "${var.project_name}-public-subnet"
+    Env  = var.environment
   }
 }
 
-resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.main.id
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.igw.id
-  }
+# 3) Subnet privé
+resource "aws_subnet" "private" {
+  vpc_id     = aws_vpc.main.id         # Subnet dans le même VPC
+  cidr_block = var.private_subnet_cidr # Ex: 10.0.2.0/24
 
   tags = {
-    Name = "${var.project_name}-public-rt"
+    Name = "${var.project_name}-private-subnet"
+    Env  = var.environment
   }
 }
-
-resource "aws_route_table_association" "public_assoc" {
-  subnet_id      = aws_subnet.public.id
-  route_table_id = aws_route_table.public.id
-}
-
-#######################################
-# Sécurité (Security Group)
-#######################################
-
-resource "aws_security_group" "ec2_sg" {
-  name        = "${var.project_name}-sg"
-  description = "Security group for EC2 instance"
-  vpc_id      = aws_vpc.main.id
-
-  ingress {
-    description = "SSH"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = [var.allowed_ssh_cidr]
-  }
-
-  ingress {
-    description = "HTTP"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "${var.project_name}-sg"
-  }
-}
-
-#######################################
-# Key Pair (pour SSH)
-#######################################
-
-resource "aws_key_pair" "this" {
-  key_name   = var.ssh_key_name
-  public_key = var.ssh_public_key
-}
-
-#######################################
-# AMI Ubuntu
-#######################################
-
-data "aws_ami" "ubuntu" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"] # Canonical
-}
-
-#######################################
-# EC2 Instance
-#######################################
-
-resource "aws_instance" "app" {
-  ami                    = data.aws_ami.ubuntu.id
-  instance_type          = var.instance_type
-  subnet_id              = aws_subnet.public.id
-  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
-  key_name               = aws_key_pair.this.key_name
-
-  user_data = file("${path.module}/cloud-init.yaml")
-
-  tags = {
-    Name        = "${var.project_name}-ec2"
-    Environment = var.environment
-  }
-}
-#######################################
