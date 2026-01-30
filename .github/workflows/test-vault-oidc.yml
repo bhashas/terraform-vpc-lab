@@ -1,0 +1,27 @@
+name: Test Vault OIDC - Récupération sécurisée
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  fetch-vault-secret:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Obligatoire pour JWT OIDC
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Auth to Vault via GitHub OIDC
+        uses: hashicorp/vault-action@v3
+        with:
+          url: https://localhost:8443
+          method: jwt
+          role: bhahas-aws-lab-ci
+          secrets: |
+            secret/data/my-app/test message | VAULT_MESSAGE
+
+      - name: Affiche le secret récupéré
+        run: echo "Message secret depuis Vault : $VAULT_MESSAGE"

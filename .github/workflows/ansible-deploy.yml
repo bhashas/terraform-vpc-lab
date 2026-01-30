@@ -1,0 +1,65 @@
+name: Ansible Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ansible:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: eu-west-3
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials file for profile terraform
+        run: |
+          mkdir -p ~/.aws
+          cat <<EOF > ~/.aws/credentials
+          [terraform]
+          aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID_TERRAFORM }}
+          aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY_TERRAFORM }}
+          EOF
+          cat <<EOF > ~/.aws/config
+          [profile terraform]
+          region=${{ env.AWS_REGION }}
+          EOF
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+
+      - name: Terraform Init (to read remote state)
+        working-directory: ./terraform
+        run: terraform init -input=false
+
+      - name: Get EC2 public IP from Terraform output
+        id: tfoutputs
+        working-directory: ./terraform
+        run: |
+          EC2_IP=$(terraform output -raw ec2_public_ip)
+          echo "ec2_ip=$EC2_IP" >> $GITHUB_OUTPUT
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ steps.tfoutputs.outputs.ec2_ip }} >> ~/.ssh/known_hosts
+
+      - name: Install Ansible
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ansible
+
+      - name: Run Ansible Playbook
+        run: |
+          EC2_IP=${{ steps.tfoutputs.outputs.ec2_ip }}
+          ansible-playbook \
+            -i "${EC2_IP}," \
+            -u ubuntu \
+            --private-key ~/.ssh/id_rsa \
+            ansible/playbook.yml

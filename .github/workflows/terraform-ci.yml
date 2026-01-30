@@ -1,0 +1,65 @@
+name: Terraform CI
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "terraform/**"
+      - ".github/workflows/terraform-ci.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "terraform/**"
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: eu-west-3
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials file for profile terraform
+        run: |
+          mkdir -p ~/.aws
+          cat <<EOF > ~/.aws/credentials
+          [terraform]
+          aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          EOF
+          cat <<EOF > ~/.aws/config
+          [profile terraform]
+          region=${{ env.AWS_REGION }}
+          EOF
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+
+      - name: Terraform Init
+        working-directory: ./terraform
+        run: terraform init -input=false
+
+      - name: Terraform Fmt
+        working-directory: ./terraform
+        run: terraform fmt -check
+
+      - name: Terraform Validate
+        working-directory: ./terraform
+        run: terraform validate
+
+      - name: Terraform Plan
+        if: github.event_name != 'push' || github.ref != 'refs/heads/main'
+        working-directory: ./terraform
+        run: terraform plan -input=false
+
+      - name: Terraform Plan and Apply (main branch)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        working-directory: ./terraform
+        run: |
+          terraform plan -out=tfplan -input=false
+          terraform apply -input=false -auto-approve tfplan

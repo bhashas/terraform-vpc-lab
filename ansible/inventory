@@ -1,0 +1,3 @@
+[ec2]
+# Remplace par la sortie de: terraform output -raw ec2_public_ip
+1.2.3.4 ansible_user=ubuntu

@@ -1,0 +1,32 @@
+---
+- name: Configure EC2 instance
+  hosts: all
+  become: true
+  tasks:
+    - name: Ensure apt cache is up to date
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Ensure nginx is installed
+      apt:
+        name: nginx
+        state: present
+
+    - name: Deploy custom index.html
+      copy:
+        dest: /var/www/html/index.html
+        content: |
+          <html>
+          <head><title>Terraform + Ansible Lab</title></head>
+          <body>
+          <h1>Deployed via Ansible on top of Terraform EC2</h1>
+          <p>Bravo Brahim !</p>
+          </body>
+          </html>
+
+    - name: Ensure nginx is running
+      service:
+        name: nginx
+        state: started
+        enabled: true
