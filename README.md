@@ -1,12 +1,17 @@
 # 🚀 Infrastructure Automation — Terraform + Ansible
 
-> Provisioning et configuration automatisés d'une infrastructure virtualisée, avec pipeline CI/CD intégrée.
+[![CI](https://github.com/bhashas/infra-automation-terraform-ansible/actions/workflows/ci.yml/badge.svg)](https://github.com/bhashas/infra-automation-terraform-ansible/actions/workflows/ci.yml)
+![HCL](https://img.shields.io/badge/IaC-Terraform-844FBA?logo=terraform)
+![Ansible](https://img.shields.io/badge/Config-Ansible-EE0000?logo=ansible)
+![License](https://img.shields.io/badge/License-MIT-blue)
+
+> Provisioning et configuration automatisés d'une infrastructure virtualisée sur Proxmox VE, avec pipeline CI/CD sécurisée (Checkov + Trivy).
 
 ---
 
 ## 🎯 Problème résolu
 
-Les infrastructures classiques souffrent de déploiements manuels longs, d'erreurs humaines répétitives, d'un manque de standardisation et d'une difficulté à reproduire les environnements.
+Les infrastructures classiques souffrent de déploiements manuels longs, d'erreurs humaines répétitives et d'un manque de standardisation.
 
 **Solution : Infrastructure as Code (IaC)** — chaque composant est versionné, automatisé et reproductible.
 
@@ -78,14 +83,14 @@ Push / Pull Request
 
 ## ⚙️ Stack technique
 
-| Outil           | Rôle                                  |
-|-----------------|---------------------------------------|
-| Terraform       | Provisioning infrastructure (IaC)     |
-| Ansible         | Configuration et hardening système    |
-| GitHub Actions  | Pipeline CI/CD automatisée            |
-| Checkov         | Scan sécurité du code Terraform       |
-| Trivy           | Scan vulnérabilités images/IaC        |
-| Proxmox VE      | Hyperviseur cible (lab on-prem)       |
+| Outil          | Rôle                               |
+|----------------|------------------------------------|
+| Terraform      | Provisioning infrastructure (IaC)  |
+| Ansible        | Configuration et hardening système |
+| GitHub Actions | Pipeline CI/CD automatisée         |
+| Checkov        | Scan sécurité du code Terraform    |
+| Trivy          | Scan vulnérabilités images/IaC     |
+| Proxmox VE     | Hyperviseur cible (lab on-prem)    |
 
 ---
 
@@ -93,8 +98,8 @@ Push / Pull Request
 
 ```bash
 # Cloner le repo
-git clone https://github.com/bhashas/<repo>.git
-cd <repo>
+git clone https://github.com/bhashas/infra-automation-terraform-ansible.git
+cd infra-automation-terraform-ansible
 
 # Initialiser Terraform
 terraform init
@@ -109,7 +114,7 @@ ansible-playbook -i inventory ansible/playbooks/site.yml
 ## 📈 Valeur ajoutée
 
 - Infrastructure 100% reproductible et versionnée
-- Réduction des erreurs humaines (zéro touch manuel)
+- Zéro touch manuel — réduction des erreurs humaines
 - Sécurité intégrée dès le pipeline (shift-left)
 - Base solide pour évoluer vers K8s / GitOps
 
