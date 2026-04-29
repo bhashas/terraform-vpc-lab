@@ -1,5 +1,7 @@
 # 🚀 Infrastructure Automation Project (Terraform + Ansible)
 
+---
+
 ## ⚡ Objectif réel
 
 Réduire le temps de déploiement d’infrastructure de plusieurs heures à quelques minutes grâce à l’automatisation.
