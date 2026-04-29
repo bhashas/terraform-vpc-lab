@@ -1,3 +1,6 @@
+## 🚀 Infrastructure Automation Project
+
+Solution complète d’automatisation d’infrastructure basée sur Terraform et Ansible.
 ## 💼 Ce que je peux réaliser pour une entreprise
 
 Ce type de solution est directement applicable pour :
