@@ -1,4 +1,6 @@
-# 🚀 Infrastructure Automation Project (Terraform + Ansible)
+🚀 Infrastructure Automation Project (Terraform + Ansible)
+
+---
 
 ## ⚡ Objectif réel
 
@@ -39,33 +41,6 @@ Ce projet démontre une approche d’Infrastructure as Code (IaC) permettant de 
            +----------+----------+
                       |
                       v
----
-
-## 🔄 CI/CD (GitHub Actions)
-
-Ce projet intègre une pipeline CI/CD pour automatiser :
-
-- validation du code Terraform
-- vérification de la syntaxe Ansible
-- détection d’erreurs avant déploiement
-- contrôle qualité de l’infrastructure as code
-
-### ⚙️ Pipeline automatisée
-
-```text
-Push / PR
-   |
-   v
-GitHub Actions
-   |
-   +--> Terraform Init
-   +--> Terraform Validate
-   +--> Terraform Plan
-   |
-   +--> Ansible Lint (si applicable)
-   |
-   v
-Validation OK / Fail
      +--------------------------------+
      |  Environnement final           |
      |  - Packages installés         |
