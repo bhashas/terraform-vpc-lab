@@ -121,5 +121,8 @@ Push / Pull Request
 **Brahim Hashas** — Ingénieur Cloud & DevSecOps  
 Spécialisé : automatisation d'infrastructure, CI/CD, sécurité IaC, Proxmox / Linux
 
-📩 Disponible pour missions freelance ou CDI — France / Remote  
-🔗 [github.com/bhashas](https://github.com/bhashas)
+📩 [b.hashas@hashas.fr](mailto:b.hashas@hashas.fr)  
+💼 [linkedin.com/in/brahim-hashas-221902100](https://www.linkedin.com/in/brahim-hashas-221902100/)  
+🔗 [github.com/bhashas](https://github.com/bhashas)  
+
+> Disponible pour missions freelance ou CDI — France / Remote
