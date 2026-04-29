@@ -1,72 +1,84 @@
-🧩 📌 Infrastructure Automation Lab (Terraform + Ansible)
-🚀 Objectif du projet
+# 🚀 Automatisation d’infrastructure (Terraform + Ansible)
 
-Ce projet montre une approche Infrastructure as Code (IaC) pour automatiser le déploiement et la configuration d’une infrastructure Linux.
+## 💼 Présentation
 
-Il permet de :
+Ce projet démontre une approche d’Infrastructure as Code (IaC) permettant de déployer et configurer automatiquement une infrastructure Linux.
 
-déployer automatiquement des machines virtuelles
-configurer les systèmes de manière reproductible
-réduire les opérations manuelles
-améliorer la cohérence et la sécurité de l’infrastructure
-🏗️ Architecture
-Provisioning : Terraform
-Configuration : Ansible
-OS : Linux
-Infrastructure : Proxmox / environnement virtualisé
-⚙️ Fonctionnalités
-Déploiement automatisé d’infrastructure
-Configuration post-installation via Ansible
-Séparation infrastructure / configuration
-Structure réutilisable (modules Terraform)
-Gestion des variables et environnements
-🔐 Cas d’usage
+L’objectif est de supprimer les opérations manuelles et de rendre les déploiements reproductibles, rapides et fiables.
 
-Ce type d’automatisation est utilisé pour :
+---
 
-déployer des environnements de test rapidement
-standardiser des infrastructures IT
-automatiser des environnements Dev / Lab / Prod
-réduire les erreurs humaines en configuration
-🛠️ Stack technique
-Terraform
-Ansible
-Linux
-Virtualisation (Proxmox / VM)
-📁 Structure du projet
-terraform/
-  ├── main.tf
-  ├── variables.tf
-  ├── outputs.tf
+## 🎯 Valeur métier
 
-ansible/
-  ├── playbooks/
-  ├── roles/
+Cette solution permet de :
 
-modules/
-  ├── compute/
-  ├── network/
-📌 Objectif pédagogique
+- ⚡ réduire le temps de déploiement d’infrastructure
+- 🔁 supprimer les erreurs humaines de configuration
+- 📦 standardiser les environnements (dev / test / production)
+- 🔐 améliorer la sécurité et la cohérence des systèmes
+- 📈 faciliter la scalabilité de l’infrastructure
 
-Ce projet fait partie d’un parcours DevOps orienté :
+---
 
-Infrastructure as Code
-Automation
-Cloud & Virtualisation
-Best practices IT
-💡 Vision
+## 🏗️ Architecture
 
-L’objectif est de construire une infrastructure :
+- Provisioning : Terraform  
+- Configuration : Ansible  
+- Système : Linux  
+- Infrastructure : VM / environnement virtualisé (Proxmox)
 
-reproductible
-automatisée
-sécurisée
-maintenable
-👤 Auteur
+---
 
-Brahim Hashas
+## ⚙️ Fonctionnalités
+
+- Déploiement automatisé d’infrastructure
+- Configuration post-installation automatisée
+- Structure modulaire et réutilisable
+- Gestion des variables et environnements
+- Bonnes pratiques Infrastructure as Code
+
+---
+
+## 🧠 Cas d’usage
+
+- Déploiement rapide d’environnements de test
+- Standardisation d’infrastructures IT
+- Automatisation de plateformes internes
+- Mise en place d’environnements CI/CD
+- Modernisation d’infrastructures existantes
+
+---
+
+## 🛠️ Technologies utilisées
+
+- Terraform
+- Ansible
+- Linux
+- Virtualisation (Proxmox / VM)
+
+---
+
+## 📌 Objectif du projet
+
+Ce projet illustre une approche DevOps orientée :
+
+- automatisation
+- industrialisation
+- reproductibilité
+- sécurité
+
+---
+
+## 👤 Auteur
+
+**Brahim Hashas**  
 DevOps / Cloud / Infrastructure Automation
 
-💥 Pourquoi ce README est important
+---
 
-👉 il tra
+## 📬 Services possibles
+
+- Automatisation d’infrastructure (Terraform / Ansible)
+- Déploiement de serveurs Linux
+- Sécurisation d’infrastructures
+- Mise en place d’environnements DevOps
