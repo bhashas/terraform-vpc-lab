@@ -1,24 +1,16 @@
 terraform {
   required_version = ">= 1.4.6"
-
   required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
+    proxmox = {
+      source  = "bpg/proxmox"
+      version = "~> 0.70"
     }
   }
 }
 
-provider "aws" {
-  region = var.aws_region
-}
-
-module "vpc" {
-  source = "./modules/vpc"
-
-  vpc_cidr              = var.vpc_cidr
-  public_subnets_cidrs  = var.public_subnets_cidrs
-  private_subnets_cidrs = var.private_subnets_cidrs
-  project_name          = var.project_name
-  environment           = var.environment
+# Provider configuré via variables d'environnement :
+# PROXMOX_VE_ENDPOINT, PROXMOX_VE_USERNAME, PROXMOX_VE_PASSWORD
+provider "proxmox" {
+  endpoint = var.proxmox_endpoint
+  insecure = true
 }
