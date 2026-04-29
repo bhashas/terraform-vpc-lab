@@ -1,6 +1,8 @@
 # 🚀 Infrastructure Automation — Terraform + Ansible
 
-[![CI](https://github.com/bhashas/infra-automation-terraform-ansible/actions/workflows/ci.yml/badge.svg)](https://github.com/bhashas/infra-automation-terraform-ansible/actions/workflows/ci.yml)
+[![Terraform CI](https://github.com/bhashas/infra-automation-terraform-ansible/actions/workflows/terraform-ci.yml/badge.svg)](https://github.com/bhashas/infra-automation-terraform-ansible/actions/workflows/terraform-ci.yml)
+[![Ansible Deploy](https://github.com/bhashas/infra-automation-terraform-ansible/actions/workflows/ansible-deploy.yml/badge.svg)](https://github.com/bhashas/infra-automation-terraform-ansible/actions/workflows/ansible-deploy.yml)
+(https://github.com/bhashas/infra-automation-terraform-ansible/actions/workflows/ci.yml)
 ![HCL](https://img.shields.io/badge/IaC-Terraform-844FBA?logo=terraform)
 ![Ansible](https://img.shields.io/badge/Config-Ansible-EE0000?logo=ansible)
 ![License](https://img.shields.io/badge/License-MIT-blue)
